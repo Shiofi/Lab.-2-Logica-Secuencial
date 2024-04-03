@@ -3,9 +3,9 @@
 module tb_SyncDebounce;
 
     logic clock;
-    logic button;
-    logic button_sync;
-    logic button_sync_db;
+    logic btn;
+    logic btn_sync;
+    logic btn_sync_db;
     logic edj;
     logic rise;
     logic fall;
@@ -13,19 +13,19 @@ module tb_SyncDebounce;
     Sync Sync_Inst
     (
         .clock(clock),
-        .in(button),
-        .out(button_sync)
+        .in(btn),
+        .out(btn_sync)
     );
 
     Debounce
     #(
-        .MAX_COUNT(4)
+        .max_count(4)
     )
     Debounce_Inst
     (
         .clock(clock),
-        .in(button_sync),
-        .out(button_sync_db),
+        .in(btn_sync),
+        .out(btn_sync_db),
         .edj(edj),
         .rise(rise),
         .fall(fall)
@@ -40,10 +40,10 @@ module tb_SyncDebounce;
 
     always
     begin
-        #2 button = 0; #20 button = 1; #20 button = 0;
-        #22 button = 1; #20 button = 1; #20 button = 0; #20 button = 1;
-        #22 button = 1; #20 button = 0; #20 button = 0; #20 button = 1;
-        #22 button = 0; #20 button = 1; #20 button = 1; #20 button = 0;
+        #2 btn = 0; #20 btn = 1; #20 btn = 0;
+        #22 btn = 1; #20 btn = 1; #20 btn = 0; #20 btn = 1;
+        #22 btn = 1; #20 btn = 0; #20 btn = 0; #20 btn = 1;
+        #22 btn = 0; #20 btn = 1; #20 btn = 1; #20 btn = 0;
         #80 $stop;
     end
 

@@ -1,19 +1,19 @@
 module Debounce
 #(
-    parameter MAX_COUNT = 16
+    parameter max_count = 16
 )
 (
     input logic clock,
-    input logic in,    // Synchronous and noisy input.
-    output logic out,   // Debounced and filtered output.
-    output logic edj,   // Goes high for 1 clock cycle on either edge of output. Note: used "edj" because "edge" is a keyword.
-    output logic rise,  // Goes high for 1 clock cycle on the rising edge of output.
-    output logic fall   // Goes high for 1 clock cycle on the falling edge of output.
+    input logic in,    // entrada de ruido y sincronización
+    output logic out,   // salida de anti rebote y filtrado
+    output logic edj,   // se activa durante 1 ciclo de reloj en cualquier flanco de salida.
+    output logic rise,  // se pone a nivel alto durante 1 ciclo de reloj en el flanco ascendente de la salida
+    output logic fall   // pasa a nivel alto durante 1 ciclo de reloj en el flanco descendente de la salida
 );
 
-    localparam COUNTER_BITS = $clog2(MAX_COUNT);
+    localparam counter_bits = $clog2(max_count);
 
-    logic [COUNTER_BITS - 1 : 0] counter;
+    logic [counter_bits - 1 : 0] counter;
     logic w_edj;
     logic w_rise;
     logic w_fall;
@@ -26,24 +26,24 @@ module Debounce
 
     always @(posedge clock)
     begin
-        counter <= 0;  // Freeze counter by default to reduce switching losses when input and output are equal.
+        counter <= 0;  // congela el contador por defecto para reducir las pérdidas de conmutación cuando la entrada y la salida son iguales
         edj <= 0;
         rise <= 0;
         fall <= 0;
-        if (counter == MAX_COUNT - 1)  // If successfully debounced, notify what happened.
+        if (counter == max_count - 1)  // si se ha retirado con éxito, notifique lo sucedido
         begin
             out <= in;
-            edj <= w_edj;    // Goes high for 1 clock cycle on either edge.
-            rise <= w_rise;  // Goes high for 1 clock cycle on the rising edge.
-            fall <= w_fall;  // Goes high for 1 clock cycle on the falling edge.
+            edj <= w_edj;    // pasa a nivel alto durante 1 ciclo de reloj en cualquiera de los flancos
+            rise <= w_rise;  // sube durante 1 ciclo de reloj en el flanco ascendente
+            fall <= w_fall;  // se pone a nivel alto durante 1 ciclo de reloj en el flanco descendente
         end
-        else if (in != out)  // Hysteresis.
+        else if (in != out)  // histéresis
         begin
-            counter <= counter + 1;  // Only increment when input and output differ.
+            counter <= counter + 1;  // solo se incrementa cuando la entrada y la salida difieren
         end
     end
 
-    // Edge detect.
+    // detección de flancos
     assign w_edj = in ^ out;
     assign w_rise = in & ~out;
     assign w_fall = ~in & out;

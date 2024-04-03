@@ -1,11 +1,11 @@
 module Sync
 #(
-    parameter SYNC_BITS = 3  // Number of bits in the synchronisation buffer (2 minimum).
+    parameter SYNC_BITS = 3  // número de bits en el búfer de sincronización (2 mínimo)
 )
 (
     input logic clock,
-    input logic in,     // Asynchronous input.
-    output logic out    // Synchronous output.
+    input logic in,     // entrada asíncrona
+    output logic out    // salida síncrona
 );
 
     localparam SYNC_MSB = SYNC_BITS - 1;
