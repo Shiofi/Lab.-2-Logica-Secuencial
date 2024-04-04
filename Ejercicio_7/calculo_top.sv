@@ -60,14 +60,14 @@ module calculo_top(
    .seleccion_i(seleccion_mux),
    .salida_o(salida_mux));
    
-   bancoreg registro(
-   .clk10MHz_i(clk_10MHz),
-   .rst_i(reset_i),
-   .we_i(control_registro),
+   banco_registro registro(
+   .clk10MHz(clk_10MHz),
+   .rst(reset_i),
+   .we(control_registro),
    .datain_i(salida_mux),
-   .addrWrite_i(direccion_lectura_2),
-   .addrRead1_i(direccion_lectura_1),
-   .addrRead2_i(direccion_lectura_2),
+   .addr_rd(direccion_lectura_2),
+   .addr_rs1(direccion_lectura_1),
+   .addr_rs2(direccion_lectura_2),
    .rs1_o(salida_registro_1),
    .rs2_o(salida_registro_2));
    
@@ -94,9 +94,9 @@ module calculo_top(
    .clk_1kHz_o(clk_1kHz));
    
    display_7_segmentos display(
-   .dat_reg(salida_registro_2),
-   .sw_pi(sw_pi),
+   .dato_reg(salida_registro_2),
+   .dp_ce(dp_ce),
    .clk1k(clk_1kHz),
-   .LED_o(led_o),
-   .an_o(an_o));
+   .dp_out(dp_out),
+   .dp_o(dp_o));
 endmodule
