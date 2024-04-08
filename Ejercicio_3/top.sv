@@ -13,12 +13,15 @@ module top(input logic clk,
            output logic [3:0] sal
            );
            
-clk_divider clk_1(
-.clk(clk), .divide_clk(divide_clk)
-);
+clk_divider clk_1(.clk(clk), .divide_clk(divide_clk));
 
 counter_2bits c_2(.clk(clk), .rst(rst), .pause(pause), .count(count));         
 
 Antirebote(.clk(clk), .boton_pi(boton_pi), .boton_debounce_o(boton_debounce_o));
+
+flipflop(.clk(clk), .rst(rst), .ena(ena), .ent(ent), .sal(sal));
+
+synchronizer(.clk(clk), .input_b(input_b), .output_b(output_b));
   
 endmodule
+
