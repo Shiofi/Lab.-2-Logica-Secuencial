@@ -1,25 +1,4 @@
 `timescale 1ns / 1ps
-//////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
-// 
-// Create Date: 06.09.2023 22:11:24
-// Design Name: 
-// Module Name: tb_top
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
-// Description: 
-// 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
-//////////////////////////////////////////////////////////////////////////////////
-
-
 module tb_top(
 
     );
@@ -41,224 +20,34 @@ clk_wiz_0 clkA(
     .clk_out1(clk_10MHz),     // output clk_10MHz
     // Status and control signals
     
-    
    // Clock in ports
     .clk_in1(clk_tb));      // input clk_in1
-
 
 //Se instancia las salidas del modulo registro
 
 
 module_top topA(.dp_i3(i3), .dp_i2(i2), .dp_i1(i1), .dp_i0(i0), .dp_ce(ce), .clk(clk_tb), .dp_o(dp_o), .dp_out(dp_out));
-
 initial
 begin
-
-
-//Se inicializa el reloj
-clk_tb = 0;
-forever
-#5
-clk_tb = ~clk_tb;
-
-end
-
-initial
-begin
-
-#3000;
-
-
-//Se crean los registros de entrada iniciales
-
-i3 = 1'b0;
-i2 = 1'b0;
-i1 = 1'b0;
-i0 = 1'b1;
-
-
-//Se prueba el clock enable
-
-ce = 1'b0;
-#20;
-
-ce = 1'b1;
-#100;
-
-//Se crean los registros de entrada posteriores
-
-i3 = 1'b0; 
-i2 = 1'b0;
-i1 = 1'b1;
-i0 = 1'b0;
-
-//Se prueba el clock enable
-
-ce = 1'b0;
-#20;
-
-ce = 1'b1;
-#100;
-
-//Se crean los registros de entrada posteriores
-
-i3 = 1'b0; 
-i2 = 1'b0;
-i1 = 1'b1;
-i0 = 1'b1;
-
-//Se prueba el clock enable
-
-ce = 1'b0;
-#20;
-
-ce = 1'b1;
-#100;
-
-i3 = 1'b0; 
-i2 = 1'b1;
-i1 = 1'b0;
-i0 = 1'b0;
-
-//Se prueba el clock enable
-
-ce = 1'b0;
-#20;
-
-ce = 1'b1;
-#100;
-
-i3 = 1'b0; 
-i2 = 1'b1;
-i1 = 1'b0;
-i0 = 1'b1;
-
-//Se prueba el clock enable
-
-ce = 1'b0;
-#20;
-
-ce = 1'b1;
-#100;
-
-i3 = 1'b0; 
-i2 = 1'b1;
-i1 = 1'b1;
-i0 = 1'b0;
-
-//Se prueba el clock enable
-
-ce = 1'b0;
-#20;
-
-ce = 1'b1;
-#100;
-
-i3 = 1'b0; 
-i2 = 1'b1;
-i1 = 1'b1;
-i0 = 1'b1;
-
-//Se prueba el clock enable
-
-ce = 1'b0;
-#20;
-
-ce = 1'b1;
-#100;
-
-i3 = 1'b1; 
-i2 = 1'b0;
-i1 = 1'b0;
-i0 = 1'b0;
-
-//Se prueba el clock enable
-
-ce = 1'b0;
-#20;
-
-ce = 1'b1;
-#100;
-
-i3 = 1'b1; 
-i2 = 1'b0;
-i1 = 1'b0;
-i0 = 1'b1;
-
-//Se prueba el clock enable
-
-ce = 1'b0;
-#20;
-
-ce = 1'b1;
-#100;
-
-i3 = 1'b1; 
-i2 = 1'b0;
-i1 = 1'b1;
-i0 = 1'b0;
-
-//Se prueba el clock enable
-
-ce = 1'b0;
-#20;
-
-ce = 1'b1;
-#100;
-
-i3 = 1'b1; 
-i2 = 1'b0;
-i1 = 1'b1;
-i0 = 1'b1;
-
-//Se prueba el clock enable
-
-ce = 1'b0;
-#20;
-
-ce = 1'b1;
-#100;
-
-i3 = 1'b1; 
-i2 = 1'b1;
-i1 = 1'b0;
-i0 = 1'b0;
-
-//Se prueba el clock enable
-
-ce = 1'b0;
-#20;
-
-ce = 1'b1;
-#100;
-
-i3 = 1'b1; 
-i2 = 1'b1;
-i1 = 1'b1;
-i0 = 1'b0;
-
-//Se prueba el clock enable
-
-ce = 1'b0;
-#20;
-
-ce = 1'b1;
-#100;
-
-i3 = 1'b1; 
-i2 = 1'b1;
-i1 = 1'b1;
-i0 = 1'b1;
-
-//Se prueba el clock enable
-
-ce = 1'b0;
-#20;
-
-ce = 1'b1;
-#100;
-
-end
-
+initial begin
+        // Semilla aleatoria basada en el tiempo
+        $randomseed($time);
+        clk_tb = 0;
+ $randomseed($time);
+  #5;
+  
+   repeat(10) begin
+            @(negedge  clk_tb);
+            i3 = $random % 4;
+            i2 = $random % 4;
+            i1 = $random % 4;
+            i0 = $random % 4;
+   $display("i3 = %b, i2 = %b, i1 = %b, i0 = %b", i3, i2, i1, i0);
+            $display("result = %b", dp_out);
+        end
+
+        // Finalizar la simulación
+        $finish;
+    end
 
 endmodule
