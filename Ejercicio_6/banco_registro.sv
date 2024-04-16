@@ -1,33 +1,27 @@
 `timescale 1ns / 1ps
 
-//parameter N = 1;
-//parameter W = 1;
+parameter N = 3;
+parameter W = 3;
 
 module banco_registro(input logic clk,  
                       input logic rst,
                       input logic we,
-                      input logic [8-1:0] data_in,
-                      input logic [8-1:0] addr_rd,
-                      input logic [8-1:0] addr_rs1,
-                      input logic [8-1:0] addr_rs2,
-                      output logic [8-1:0] rs1,
-                      output logic [8-1:0] rs2);
+                      input logic [W-1:0] data_in,
+                      input logic [N-1:0] addr_rd,
+                      input logic [N-1:0] addr_rs1,
+                      input logic [N-1:0] addr_rs2,
+                      output logic [W-1:0] rs1,
+                      output logic [W-1:0] rs2);
                       
-
-logic [8-1:0] registro [0:2*8-1];
+logic [W-1:0] [2**N-1:0] registro;
 
 always_ff @(posedge clk, posedge rst) begin 
    if (rst) begin 
-        for (int i = 0; i < 2*8; i = i++) begin 
-            registro[i] = 0; 
-        end
-   end  
-end
-
-always_ff @(posedge clk, posedge we) begin 
-    if(we) begin    
-        registro[addr_rd] = data_in; 
-    end
+        registro <= '0;
+   end
+   else if (we) begin 
+        registro[addr_rd] = data_in;
+   end
 end
 
 always_ff @(*) begin
